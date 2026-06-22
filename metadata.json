@@ -1,0 +1,6 @@
+{
+  "name": "Aura",
+  "description": "A beautiful offline clone of Prequel. Edit photos with vintage retro filters (VHS, Glitch, Disco, D3D, Neon), aesthetic overlays, adjustments, and draft saving.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
