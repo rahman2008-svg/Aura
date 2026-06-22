@@ -1,53 +1,41 @@
 workflows:
-android-release:
-name: Aura Production Build
-max_build_duration: 120
+  android-release:
+    name: Aura Production Build
+    max_build_duration: 120
 
-environment:
-  java: 17
+    environment:
+      java: 17
 
-  vars:
-    GRADLE_OPTS: >-
-      -Dorg.gradle.daemon=true
-      -Dorg.gradle.parallel=true
-      -Dorg.gradle.caching=true
+      vars:
+        GRADLE_OPTS: "-Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
 
-cache:
-  cache_paths:
-    - ~/.gradle/caches
-    - ~/.gradle/wrapper
+    cache:
+      cache_paths:
+        - ~/.gradle/caches
+        - ~/.gradle/wrapper
 
-scripts:
-  - name: Grant permission
-    script: |
-      chmod +x gradlew
+    scripts:
+      - name: Grant permission
+        script: chmod +x gradlew
 
-  - name: Clean project
-    script: |
-      ./gradlew clean
+      - name: Clean
+        script: ./gradlew clean
 
-  - name: Download dependencies
-    script: |
-      ./gradlew build --stacktrace
+      - name: Build Debug APK
+        script: ./gradlew assembleDebug
 
-  - name: Build Debug APK
-    script: |
-      ./gradlew assembleDebug
+      - name: Build Release APK
+        script: ./gradlew assembleRelease
 
-  - name: Build Release APK
-    script: |
-      ./gradlew assembleRelease
+      - name: Build AAB
+        script: ./gradlew bundleRelease
 
-  - name: Build AAB (Play Store)
-    script: |
-      ./gradlew bundleRelease
+    artifacts:
+      - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
+      - app/build/outputs/mapping/**
 
-artifacts:
-  - app/build/outputs/apk/**/**/*.apk
-  - app/build/outputs/bundle/**/**/*.aab
-  - app/build/outputs/mapping/**
-
-publishing:
-  email:
-    recipients:
-      - your-email@example.com
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
