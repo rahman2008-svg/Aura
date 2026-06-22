@@ -6,9 +6,11 @@ max_build_duration: 120
 environment:
   java: 17
 
-  # cache speed optimization
   vars:
-    GRADLE_OPTS: "-Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
+    GRADLE_OPTS: >-
+      -Dorg.gradle.daemon=true
+      -Dorg.gradle.parallel=true
+      -Dorg.gradle.caching=true
 
 cache:
   cache_paths:
@@ -26,7 +28,7 @@ scripts:
 
   - name: Download dependencies
     script: |
-      ./gradlew dependencies
+      ./gradlew build --stacktrace
 
   - name: Build Debug APK
     script: |
@@ -41,8 +43,8 @@ scripts:
       ./gradlew bundleRelease
 
 artifacts:
-  - app/build/outputs/**/*.apk
-  - app/build/outputs/**/*.aab
+  - app/build/outputs/apk/**/**/*.apk
+  - app/build/outputs/bundle/**/**/*.aab
   - app/build/outputs/mapping/**
 
 publishing:
